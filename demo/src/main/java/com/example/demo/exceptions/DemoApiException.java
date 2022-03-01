@@ -1,7 +1,9 @@
 package com.example.demo.exceptions;
 
 import com.example.demo.constants.DemoError;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(value = {"stackTrace", "cause", "suppressed", "localizedMessage"})
 public class DemoApiException extends Exception {
 
     private final int code;

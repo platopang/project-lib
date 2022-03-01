@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping({ "/api" })
-public class JwtLoginController {
+public class JwtLoginController extends BaseController {
 
     @Resource
     JwtAuthenticator jwtAuthenticator;
