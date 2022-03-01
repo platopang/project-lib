@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.constants.DemoError;
 import com.example.demo.exceptions.DemoApiException;
 import com.example.demo.models.UserAccountModel;
+import com.example.demo.repositories.UserAccountRepository;
 import com.example.demo.securities.PasswordManager;
 import com.example.demo.utils.SecurityUtil;
 import org.springframework.stereotype.Service;
@@ -13,18 +14,10 @@ import javax.annotation.Resource;
 public class UserService {
 
     @Resource
-    protected PasswordManager passwordManager;
+    protected UserAccountRepository userAccountRepository;
 
     public UserAccountModel findAccountByLoginId(String loginId) {
-        // ToDo: implement DAO
-        // **** Temp code for demo - START
-        UserAccountModel userAccountModel = new UserAccountModel();
-        userAccountModel.setId(1L);
-        userAccountModel.setLoginId(loginId);
-        userAccountModel.setHashedPassword(passwordManager.getHashedPassword(1L, "P@ssw0rd"));
-        userAccountModel.setInvalidLoginAttemptCount(0);
-        // **** Temp code for demo - END
-        return userAccountModel;
+        return userAccountRepository.findByLoginId(loginId);
     }
 
     public UserAccountModel getCurrentUserAccount() throws DemoApiException {

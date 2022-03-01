@@ -1,17 +1,25 @@
 package com.example.demo.models.base;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.OffsetDateTime;
 
-public class BaseModel implements Serializable {
+@MappedSuperclass
+public class BaseModel {
 
+    @Column(name="created_by")
     private String createdBy;
 
-    private Date createdTime;
+    @Column(name="created_date")
+    private OffsetDateTime createdTime;
 
+    @Column(name="last_modified_by")
     private String lastModifiedBy;
 
-    private Date lastModifiedTime;
+    @Column(name="last_modified_dt")
+    private OffsetDateTime lastModifiedTime;
 
     public String getCreatedBy() {
         return createdBy;
@@ -21,11 +29,11 @@ public class BaseModel implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedTime() {
+    public OffsetDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -37,12 +45,23 @@ public class BaseModel implements Serializable {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public Date getLastModifiedTime() {
+    public OffsetDateTime getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Date lastModifiedTime) {
+    public void setLastModifiedTime(OffsetDateTime lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreatedTime(OffsetDateTime.now());
+        this.setLastModifiedTime(OffsetDateTime.now());
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.setLastModifiedTime(OffsetDateTime.now());
     }
 
 }
