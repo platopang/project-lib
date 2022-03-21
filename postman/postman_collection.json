@@ -12,9 +12,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"postman.setEnvironmentVariable(\"bearer_token\", jsonData.data);",
-							""
+							"var jsonData = \"\";",
+							"try {jsonData = JSON.parse(responseBody);} catch (e) {}",
+							"if (jsonData.accessToken != undefined) {",
+							"    postman.setEnvironmentVariable(\"access_token\", jsonData.accessToken);",
+							"}",
+							"if (jsonData.refreshToken != undefined) {",
+							"    postman.setEnvironmentVariable(\"refresh_token\", jsonData.refreshToken);",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -50,7 +55,95 @@
 			"response": []
 		},
 		{
-			"name": "Health Check Logged In",
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/logout",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = \"\";",
+							"try {jsonData = JSON.parse(responseBody);} catch (e) {}",
+							"if (jsonData.accessToken != undefined) {",
+							"    postman.setEnvironmentVariable(\"access_token\", jsonData.accessToken);",
+							"}",
+							"if (jsonData.refreshToken != undefined) {",
+							"    postman.setEnvironmentVariable(\"refresh_token\", jsonData.refreshToken);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\":\"{{refresh_token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/refreshToken",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"refreshToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health Check",
 			"event": [
 				{
 					"listen": "test",
@@ -97,7 +190,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{bearer_token}}",
+				"value": "{{access_token}}",
 				"type": "string"
 			}
 		]

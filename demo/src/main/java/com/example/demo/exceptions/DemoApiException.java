@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class DemoApiException extends Exception {
 
     private final int code;
-
     private final String description;
-
     private final String message;
 
     public DemoApiException(String message, Throwable cause, DemoError demoErrEnum) {

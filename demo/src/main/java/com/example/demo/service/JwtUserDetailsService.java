@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     public UserDetails loadUser(@NonNull UserAccountModel userAccountModel) {
         String loginId = userAccountModel.getLoginId();

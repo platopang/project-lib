@@ -12,7 +12,7 @@ public class BaseModel {
     @Column(name="created_by")
     private String createdBy;
 
-    @Column(name="created_date")
+    @Column(name="created_dt")
     private OffsetDateTime createdTime;
 
     @Column(name="last_modified_by")

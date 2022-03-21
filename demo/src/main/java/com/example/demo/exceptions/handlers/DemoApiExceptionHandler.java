@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.exceptions.handlers;
 
 import com.example.demo.exceptions.DemoApiException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,13 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public class BaseController {
+@RestControllerAdvice
+public class DemoApiExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler({DemoApiException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ResponseBody
-    public String handleLsServiceException(DemoApiException e) throws JsonProcessingException {
+    public String handleServiceException(DemoApiException e) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(e);
     }
 

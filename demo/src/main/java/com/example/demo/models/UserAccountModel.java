@@ -19,9 +19,6 @@ public class UserAccountModel extends BaseModel {
     @Column(name="hashed_password")
     private String hashedPassword;
 
-    @Column(name="login_token")
-    private String loginToken;
-
     @Column(name="invalid_login_attempt_count")
     private Integer invalidLoginAttemptCount;
 
@@ -47,14 +44,6 @@ public class UserAccountModel extends BaseModel {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
-    }
-
-    public String getLoginToken() {
-        return loginToken;
-    }
-
-    public void setLoginToken(String loginToken) {
-        this.loginToken = loginToken;
     }
 
     public Integer getInvalidLoginAttemptCount() {

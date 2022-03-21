@@ -1,21 +1,17 @@
-package com.example.demo.controllers.filters;
+package com.example.demo.securities;
 
 import com.example.demo.exceptions.DemoApiException;
-import com.example.demo.securities.JwtAuthenticator;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.annotation.Resource;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class DemoLogoutHandler implements LogoutHandler {
 
     @Resource
     private JwtAuthenticator jwtAuthenticator;
@@ -23,20 +19,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String requestTokenHeader = request.getHeader("Authorization");
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             String accessToken = requestTokenHeader.substring("Bearer ".length());
             try {
-                jwtAuthenticator.authenticateByAccessToken(accessToken);
+                jwtAuthenticator.deleteTokenByAccessToken(accessToken);
             } catch (DemoApiException e) {
                 handlerExceptionResolver.resolveException(request, response, null, e);
-                return;
             }
         }
-
-        chain.doFilter(request, response);
     }
+
 }
